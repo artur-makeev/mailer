@@ -20,6 +20,14 @@ def start_sending(mail_list):
     [['Фамилия Имя отчество', 'email@domen.ru'], ['Фамилия Имя Отчество', ['email1@domen.ru', 'email2@omen.ru']].
      """
     for company in mail_list:
+        today = int(datetime.strftime(datetime.now(), "%w"))
+        while today == 0 or today == 6:
+            time.sleep(3600)
+            today = int(datetime.strftime(datetime.now(), "%w"))
+        current_hour = int(datetime.strftime(datetime.now(), "%H"))
+        while current_hour < 8 or current_hour > 18:
+            time.sleep(3600)
+            current_hour = int(datetime.strftime(datetime.now(), "%H"))
         print(from_excel.client_base.index(company))
         if type(company[1]) == list:
             for i in range(len(company[1])):
@@ -73,15 +81,6 @@ def start_sending(mail_list):
             server.send_message(msg)
             server.quit()
             time.sleep(1800)  # Пауза между отправкой писем в секундах
-            # По субботам и воскресеньям пиьсма не отправляются
-            today = int(datetime.strftime(datetime.now(), "%w"))
-            while today == 0 or today == 6:
-                time.sleep(3600)
-                today = int(datetime.strftime(datetime.now(), "%w"))
-            current_hour = int(datetime.strftime(datetime.now(), "%H"))
-            while current_hour < 8 or current_hour > 18:
-                time.sleep(3600)
-                current_hour = int(datetime.strftime(datetime.now(), "%H"))
 
 
 start_sending(from_excel.client_base)
